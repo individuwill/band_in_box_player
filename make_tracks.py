@@ -7,15 +7,21 @@ import struct
 import os
 
 AUDIBLE = False
-OUTPUT_NAME = 'pan_flute.wav'
-#INSTRUMENT_DIRECTORY = 'flute'
-INSTRUMENT_DIRECTORY = '../Audio/pan_flute/for_track'
-#SONG_FILE = 'ode_high.txt'
-SONG_FILE = 'ode_mid_high.txt'
 FPS = 44100
 SAMPLE_WIDTH = 2
 CHANNELS = 2
 NP = 0.10
+BPM = 120
+BPS = BPM/60.0
+BEAT_LENGTH = 1.0/BPS
+NOTE_LENGTHS = {
+    'Q' : BEAT_LENGTH,
+    'H' : 2*BEAT_LENGTH, # half note
+    'W' : 4*BEAT_LENGTH, # whole note
+    'E' : BEAT_LENGTH/2.0, # eigth note
+    'S' : BEAT_LENGTH/4.0, # sixteenth
+    'DQ' : BEAT_LENGTH + BEAT_LENGTH/2.0}
+SILENCE = (struct.pack('h', 0) * int(FPS * NP)) * SAMPLE_WIDTH
 
 def fade(data, numframes):
     fade_frames = int(0.05 * FPS * CHANNELS)
@@ -50,7 +56,6 @@ def fade(data, numframes):
     #return data
 
 def get_tones(directory):
-
     instrument_file_names = filter(lambda f: len(f) < 8,
             os.listdir(directory))
     instrument_files = [os.path.join(directory,f) for f in
@@ -77,62 +82,54 @@ def get_song(song_file):
     #print song_text
     return notes
 
-BPM = 120
-bps = BPM/60.0
-beat_length = 1.0/bps
-NOTE_LENGTHS = {
-    'Q' : beat_length,
-    'H' : 2*beat_length, # half note
-    'W' : 4*beat_length, # whole note
-    'E' : beat_length/2.0, # eigth note
-    'S' : beat_length/4.0, # sixteenth
-    'DQ' : beat_length + beat_length/2.0}
-silence = (struct.pack('h', 0) * int(FPS * NP)) * SAMPLE_WIDTH
+def make_track(output_file_name, song_description_file, notes_directory):
+    p = pyaudio.PyAudio()
+    stream = p.open(format=p.get_format_from_width(SAMPLE_WIDTH),
+            channels=CHANNELS,
+            rate=FPS,
+            output=True)
 
-p = pyaudio.PyAudio()
-stream = p.open(format=p.get_format_from_width(SAMPLE_WIDTH),
-        channels=CHANNELS,
-        rate=FPS,
-        output=True)
+    # process external note files and song description
+    tones = get_tones(notes_directory)
+    song = get_song(song_description_file)
 
-# process external note files and song description
-tones = get_tones(INSTRUMENT_DIRECTORY)
-song = get_song(SONG_FILE)
+    # setup wave output file
+    of = wave.open(output_file_name, 'wb')
+    of.setnchannels(CHANNELS)
+    of.setsampwidth(SAMPLE_WIDTH)
+    of.setframerate(FPS)
 
-# setup wave output file
-of = wave.open(OUTPUT_NAME, 'wb')
-of.setnchannels(CHANNELS)
-of.setsampwidth(SAMPLE_WIDTH)
-of.setframerate(FPS)
+    # play and or write song
+    for n in song:
+        note = n[0]
+        length = NOTE_LENGTHS[n[1]]
+        slur = False
+        if len(n) == 3 and n[2] == 'slur':
+            slur = True
 
-# play and or write song
-for n in song:
-    note = n[0]
-    length = NOTE_LENGTHS[n[1]]
-    slur = False
-    if len(n) == 3 and n[2] == 'slur':
-        slur = True
+        wf = tones[note]
+        wf.rewind()
+        if slur:
+            numframes = int(FPS * length)
+        else:
+            numframes = int(FPS * (length - NP))
 
-    wf = tones[note]
-    wf.rewind()
-    if slur:
-        numframes = int(FPS * length)
-    else:
-        numframes = int(FPS * (length - NP))
+        data = wf.readframes(numframes)
+        data = fade(data, numframes)
 
-    data = wf.readframes(numframes)
-    data = fade(data, numframes)
+        if AUDIBLE:
+            stream.write(data)
+            if not slur:
+                stream.write(SILENCE)
 
-    if AUDIBLE:
-        stream.write(data)
+        of.writeframes(data)
         if not slur:
-            stream.write(silence)
+            of.writeframes(SILENCE)
+        
+    # close audible output
+    stream.stop_stream()
+    stream.close()
+    p.terminate()
 
-    of.writeframes(data)
-    if not slur:
-        of.writeframes(silence)
-    
-# cleanup audible output
-stream.stop_stream()
-stream.close()
-p.terminate()
+if __name__ == '__main__':
+    make_track('output_tracks/pan_flute_new.wav',
