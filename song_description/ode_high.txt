@@ -1,0 +1,18 @@
+B4 Q, B4 Q, C5 Q, D5 Q,
+D5 Q, C5 Q, B4 Q, A4 Q,
+G4 Q, G4 Q, A4 Q, B4 Q,
+B4 DQ, A4 E, A4 H,
+B4 Q, B4 Q, C5 Q, D5 Q,
+D5 Q, C5 Q, B4 Q, A4 Q,
+
+G4 Q, G4 Q, A4 Q, B4 Q,
+A4 DQ, G4 E, G4 H,
+A4 Q, A4 Q, B4 Q, G4 Q,
+A4 Q, B4 E slur, C5 E, B4 Q, G4 Q,
+A4 Q, B4 E slur, C5 E, B4 Q, A4 Q,
+
+G4 Q, A4 Q, D4 H,
+B4 Q, B4 Q, C5 Q, D5 Q,
+D5 Q, C5 Q, B4 Q, A4 Q,
+G4 Q, G4 Q, A4 Q, B4 Q,
+A4 DQ, G4 E, G4 H

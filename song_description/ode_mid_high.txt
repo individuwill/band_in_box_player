@@ -1,0 +1,19 @@
+D4 Q, D4 Q, D4 Q, D4 Q,
+D4 Q, E4 Q, F#4 Q, D4 Q,
+D4 Q, D4 Q, F#4 Q, G4 Q,
+G4 DQ, F#4 E, F#4 H,
+G4 Q, D4 Q, E4 Q, F4 Q,
+
+F4 Q, E4 Q, D4 Q, E4 Q,
+D4 Q, D4 Q, F#4 Q, G4 Q,
+F#4 DQ, G4 E, G4 H,
+F#4 Q, D4 Q, D4 Q, G4 Q,
+F#4 Q, G4 E slur, F#4 E, G4 Q, G4 Q,
+
+F#4 Q, F#4 E slur, C5 E, F#4 Q, D#4 Q,
+E4 Q, C#4 Q, D4 H,
+D4 Q, D4 Q, E4 Q, F4 Q,
+
+F4 Q, E4 Q, D4 Q, E4 Q,
+D4 Q, D4 Q, F#4 Q, G4 Q,
+F#4 DQ, G4 E, G4 H

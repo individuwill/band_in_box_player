@@ -1,0 +1,18 @@
+G3 Q, G3 Q, A3 Q, B3 Q,
+B3 Q, A3 Q, G3 Q, F#3 Q,
+G3 Q, B3 Q, C4 Q, D4 Q,
+D4 DQ, D4 E, D4 H,
+D4 Q, D4 Q, C4 Q, B3 Q,
+
+G3 Q, A3 Q, B3 Q, C4 Q,
+B3 Q, B3 Q, C4 Q, D4 Q,
+C4 DQ, B3 E, B3 H,
+D4 Q, F#3 Q, G3 Q, B3 Q,
+C4 Q, B3 E, A3 E, G3 Q, B3 Q,
+
+C4 Q, B3 E, A3 E, B3 Q, B3 Q,
+B3 Q, A3 Q, F#3 H,
+G3 Q, D4 Q, C4 Q, B3 Q,
+G3 Q, A3 Q, B3 Q, C4 Q,
+B3 Q, B3 Q, C4 Q, D4 Q,
+C4 DQ, B3 E, B3 H
