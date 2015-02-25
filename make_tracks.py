@@ -23,8 +23,13 @@ NOTE_LENGTHS = {
     'DQ' : BEAT_LENGTH + BEAT_LENGTH/2.0}
 SILENCE = (struct.pack('h', 0) * int(FPS * NP)) * SAMPLE_WIDTH
 
-def fade(data, numframes):
-    fade_frames = int(0.05 * FPS * CHANNELS)
+def fade(data, numframes, fade_time = 0.05):
+    ''' takes in raw wav data in bytes as data,
+    and the number of frames included in the data as numframes.
+    Adds a linear fade to the beginning and end of data specified
+    by fade_time (specified in seconds).
+    Returns the newly faded raw wav data in bytes.'''
+    fade_frames = int(fade_time * FPS * CHANNELS)
     print numframes, fade_frames
     new_data = list(struct.unpack('%sh' % (numframes*CHANNELS), data))
     # smooth out first .1 of a second in even steps from 0 to
@@ -56,6 +61,9 @@ def fade(data, numframes):
     #return data
 
 def get_tones(directory):
+    ''' Take in a directory name as a string, enumerate the directory
+    for files, and return a dictionary mapping of note name to file
+    path'''
     instrument_file_names = filter(lambda f: len(f) < 8,
             os.listdir(directory))
     instrument_files = [os.path.join(directory,f) for f in
@@ -68,6 +76,9 @@ def get_tones(directory):
     return tones
 
 def get_song(song_file):
+    ''' Read in song description file, process the file, and return a
+    list of tuples describing which note, the duration, and option for
+    the note'''
     song_text = filter(lambda l: l.strip() != '',
             open(song_file, 'rb').read().split('\n'))
     notes = []
@@ -83,6 +94,7 @@ def get_song(song_file):
     return notes
 
 def make_track(output_file_name, song_description_file, notes_directory):
+    ''' Write the output track and optionally play it real time. '''
     p = pyaudio.PyAudio()
     stream = p.open(format=p.get_format_from_width(SAMPLE_WIDTH),
             channels=CHANNELS,
@@ -133,3 +145,5 @@ def make_track(output_file_name, song_description_file, notes_directory):
 
 if __name__ == '__main__':
     make_track('output_tracks/pan_flute_new.wav',
+            'song_description/ode_mid_high.txt',
+            '../Audio/pan_flute/for_track')

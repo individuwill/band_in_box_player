@@ -17,3 +17,12 @@ The song clips are expected to be in stereo 16 bit wave format. The output will 
 An example song description has been included in the song_description folder. This song contains 4 different voices.
 
 The make_tracks.py file is currently configured to process each voice of the song and output 4 separate tracks, one for each voice. It's default is not to play the song while creating it.
+
+### TODOs
++ make the fade function more readable
++ refactor output code so that pyaudio can be an optional dependency
+
+### Future Features
++ add rests in as an option for the notes
++ add auto tuning of the notes
++ add option to combine and mix multiple output tracks
